@@ -31,6 +31,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self?.viewModels = articles.compactMap({
                     NewsTableViewCellModel(title: $0.title , subtitle: $0.description ?? "No description", imageURL: URL(string: $0.urlToImage ?? ""))
                 })
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
             case .failure(let error): print("Error: \(error)")
             }
         }
@@ -42,7 +45,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return viewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -54,7 +57,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: <#T##IndexPath#>, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
