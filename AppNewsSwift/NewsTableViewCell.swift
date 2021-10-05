@@ -46,6 +46,9 @@ class NewsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(newsImageView)
+        contentView.addSubview(subtitleLabel)
+        contentView.addSubview(newsTitleLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -61,7 +64,15 @@ class NewsTableViewCell: UITableViewCell {
     }
     
     func configure(with viewModel: NewsTableViewCellModel) {
+        newsTitleLabel.text = viewModel.title
+        //newsImageView.imageView = viewModel.imageURL
+        subtitleLabel.text = viewModel.subtitle
         
+        if let data = viewModel.imageData {
+            newsImageView.image = UIImage(data: data)
+        } else {
+            //fetch
+        }
     }
 
 }

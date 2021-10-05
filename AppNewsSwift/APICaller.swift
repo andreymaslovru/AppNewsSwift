@@ -34,13 +34,14 @@ final class APICaller {
         static let topHeadLinesURL = URL(string: "https://newsapi.org/v2/top-headlines?country=US&apiKey=eda6154a62744b7bbad849130a7f7b6f")
     }
     
-    private init() {
-        
-    }
+    private init() {}
     
-    public func getTopStories(completion: @escaping (Result<[String], Error>) -> Void) {
-        guard let url = Constants.topHeadLinesURL else { return }
-        let task = URLSession.shared.dataTask(with: url) { data, _, error in if let error = error {
+    public func getTopStories(completion: @escaping (Result<[Articles], Error>) -> Void) {
+        guard let url = Constants.topHeadLinesURL else {
+            return
+        }
+        let task = URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
             completion(.failure(error))
         }
             else if let data = data {
@@ -48,6 +49,7 @@ final class APICaller {
                     let result = try JSONDecoder().decode(APIResponse.self, from: data)
                     
                     print("Articles \(result.articles.count)")
+                    completion(.success(result.articles))
                 }
                 catch {
                     completion(.failure(error))
